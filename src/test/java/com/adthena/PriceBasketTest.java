@@ -10,25 +10,26 @@ import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class ShoppingbasketTest {
+public class PriceBasketTest {
 
     // fields used together with @Parameter must be public
     @Parameterized.Parameter(0)
-    public int m1;
+    public String basket;
     @Parameterized.Parameter(1)
-    public int m2;
+    public String basket1;
     @Parameterized.Parameter(2)
-    public int result;
+    public String basket3;
 
 
     // creates the test data
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        Object[][] data = new Object[][] { { 1 , 2, 2 }, { 5, 3, 15 }, { 121, 4, 484 } };
+        Object[][] data = new Object[][] { { "apples" , "apples", "bread"}, { "soup" , "soup", "bread"}, { "milk" , "soup", "soup", "bread","bread", "apples"} };
         return Arrays.asList(data);
     }
     @Test
     public void buySomeShit () {
+
         assertEquals(5,5);
     }
 }

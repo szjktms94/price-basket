@@ -30,6 +30,37 @@ public class PriceBasket {
         Map<String, Long> counted = Arrays.stream(args)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-           System.out.println("HEllO" + args[0]);
+        long total = 0;
+        long subTotal = 0;
+        boolean isMoreThan2Soups = false;
+
+        for (Map.Entry<String, Long> entry : counted.entrySet()) {
+            switch (entry.getKey()) {
+                case "apples":
+                    total = total + 100 * entry.getValue();
+                    subTotal = (long) (subTotal + 100 * entry.getValue() * 0.9);
+                    break;
+                case "soup":
+                    if(entry.getValue() >= 2) {
+                        isMoreThan2Soups = true;
+                    }
+                    total = total + 65 * entry.getValue();
+                    subTotal = total;
+                    break;
+                case "bread":
+                    total = total + 80 * entry.getValue();
+                    if(isMoreThan2Soups) {
+                        subTotal = (long) (subTotal + 80 * entry.getValue() * 0.5);
+                    } else {
+                        subTotal = total;
+                    }
+                    break;
+                case "milk":
+                    total = total + 130 * entry.getValue();
+                    subTotal = total;
+                    break;
+            }
+        }
+        System.out.println("Total:" + total + ", Subtotal:" + subTotal);
     }
 }

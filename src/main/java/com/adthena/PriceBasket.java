@@ -37,10 +37,10 @@ public class PriceBasket {
             subTotal = (long) (applesCounter * 100 * 0.9 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80);
         }
 
-        String line1 = "Subtotal: £" + subTotal/100 + "\n";
+        String line1 = "Subtotal: £" + (double)subTotal/100 + "\n";
         String line2 = "Apples 10% off: -£" + applesCounter*10 + "p" + "\n";
-        String line3 = "Two soups discount 50% off from bread: -£40" + "\n";
-        String line4 = "Total: £" + total/100;
+        String line3 = "Two soups discount 50% off from bread: -40 p" + "\n";
+        String line4 = "Total: £" + (double)total/100;
 
         String bill = line1;
 

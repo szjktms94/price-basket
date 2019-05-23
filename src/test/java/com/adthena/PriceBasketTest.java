@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class PriceBasketTest {
+    private PriceBasket priceBasket = new PriceBasket();
 
     // fields used together with @Parameter must be public
     @Parameterized.Parameter(0)
@@ -29,7 +30,7 @@ public class PriceBasketTest {
     }
     @Test
     public void buySomeShit () {
-
+//        priceBasket.main();
         assertEquals(5,5);
     }
 }

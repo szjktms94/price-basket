@@ -7,60 +7,51 @@ import java.util.stream.Collectors;
 
 public class PriceBasket {
     public static void main(String[]args){
-
-        //● Soup – 65p per tin
-        //● Bread – 80p per loaf
-        //● Milk – £1.30 per bottle
-        //● Apples – £1.00 per bag
-
-        //Current special offers:
-        //● Apples have a 10% discount off their normal price this week
-        //● Buy 2 tins of soup and get a loaf of bread for half price
-
-        //For example:
-        //PriceBasket Apples Milk Bread
-        //Output should be to the console, for example:
-        //Subtotal: £3.10
-        //Apples 10% off: ­10p
-        //Total: £3.00
-        //If no special offers are applicable the code should output:
-        //Subtotal: £1.30
-        //(No offers available)
-        //Total price: £1.30
         Map<String, Long> counted = Arrays.stream(args)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        long total = 0;
-        long subTotal = 0;
-        boolean isMoreThan2Soups = false;
+        Long applesCounter = counted.get("apples");
+        Long soupCounter = counted.get("soup");
+        Long breadCounter = counted.get("bread");
+        Long milkCounter = counted.get("milk");
 
-        for (Map.Entry<String, Long> entry : counted.entrySet()) {
-            switch (entry.getKey()) {
-                case "apples":
-                    total = total + 100 * entry.getValue();
-                    subTotal = (long) (subTotal + 100 * entry.getValue() * 0.9);
-                    break;
-                case "soup":
-                    if(entry.getValue() >= 2) {
-                        isMoreThan2Soups = true;
-                    }
-                    total = total + 65 * entry.getValue();
-                    subTotal = total;
-                    break;
-                case "bread":
-                    total = total + 80 * entry.getValue();
-                    if(isMoreThan2Soups) {
-                        subTotal = (long) (subTotal + 80 * entry.getValue() * 0.5);
-                    } else {
-                        subTotal = total;
-                    }
-                    break;
-                case "milk":
-                    total = total + 130 * entry.getValue();
-                    subTotal = total;
-                    break;
-            }
+        if(applesCounter == null) {
+            applesCounter = (long)0;
         }
-        System.out.println("Total:" + total + ", Subtotal:" + subTotal);
+        if(soupCounter == null) {
+            soupCounter = (long)0;
+        }
+        if(breadCounter  == null) {
+            breadCounter = (long)0;
+        }
+        if(milkCounter == null) {
+            milkCounter = (long)0;
+        }
+
+        long total = applesCounter * 100 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80;
+        long subTotal;
+
+        if (soupCounter >= 2 && breadCounter > 0 ) {
+            subTotal = (long) (applesCounter * 100 * 0.9 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80 - 1 * 80 * 0.5);
+        } else {
+            subTotal = (long) (applesCounter * 100 * 0.9 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80);
+        }
+
+        String line1 = "Subtotal: £" + subTotal/100 + "\n";
+        String line2 = "Apples 10% off: -£" + applesCounter*10 + "p" + "\n";
+        String line3 = "Two soups discount 50% off from bread: -£40" + "\n";
+        String line4 = "Total: £" + total/100;
+
+        String bill = line1;
+
+        if (applesCounter > 0) {
+            bill = bill + line2;
+        }
+        if (soupCounter >= 2 && breadCounter > 0 ) {
+            bill = bill + line3;
+        }
+        bill = bill + line4;
+
+        System.out.println(bill);
     }
 }

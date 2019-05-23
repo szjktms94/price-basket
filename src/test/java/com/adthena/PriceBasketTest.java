@@ -29,7 +29,7 @@ public class PriceBasketTest {
         return Arrays.asList(data);
     }
     @Test
-    public void buySomeShit () {
+    public void buyApplesBread2Soups() {
 //        priceBasket.main();
         assertEquals(5,5);
     }

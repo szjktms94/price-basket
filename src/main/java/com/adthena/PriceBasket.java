@@ -1,5 +1,10 @@
 package com.adthena;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public class PriceBasket {
     public static void main(String[]args){
 
@@ -22,9 +27,9 @@ public class PriceBasket {
         //Subtotal: £1.30
         //(No offers available)
         //Total price: £1.30
-
+        Map<String, Long> counted = Arrays.stream(args)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
            System.out.println("HEllO" + args[0]);
-
     }
 }

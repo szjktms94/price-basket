@@ -2,6 +2,7 @@
 
 ### Setup
 1, Check out the project from the given github link.
+
 2, Import in intelliJ
 3, run the /src/test/java/com.adthena.BillCreatorTest
 4, If you want to run the app without test you can run

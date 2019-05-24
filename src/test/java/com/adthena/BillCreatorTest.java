@@ -11,8 +11,8 @@ import java.util.Collection;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class PriceBasketTest {
-    private PriceBasket priceBasket;
+public class BillCreatorTest {
+    private BillCreator billCreator;
 
     @Parameterized.Parameter()
     public String[] items;
@@ -43,13 +43,13 @@ public class PriceBasketTest {
 
     @Before
     public void initialize() {
-        priceBasket = new PriceBasket();
+        billCreator = new BillCreator();
     }
 
     @Test
     public void testCreateBill() {
-//        GIVEN a items with items and WHEN create bill
-        String bill = priceBasket.createBill(items);
+//        GIVEN items and WHEN create bill
+        String bill = billCreator.createBill(items);
 
 //        THEN bill equals expected bill
         assertEquals(expectedBill[0],bill);

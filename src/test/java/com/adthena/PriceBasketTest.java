@@ -1,5 +1,6 @@
 package com.adthena;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -11,26 +12,46 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class PriceBasketTest {
-    private PriceBasket priceBasket = new PriceBasket();
+    private PriceBasket priceBasket;
 
-    // fields used together with @Parameter must be public
-    @Parameterized.Parameter(0)
-    public String basket;
+    @Parameterized.Parameter()
+    public String[] items;
+
     @Parameterized.Parameter(1)
-    public String basket1;
-    @Parameterized.Parameter(2)
-    public String basket3;
+    public String[] expectedBill;
 
-
-    // creates the test data
     @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        Object[][] data = new Object[][] { { "apples" , "apples", "bread"}, { "soup" , "soup", "bread"}, { "milk" , "soup", "soup", "bread","bread", "apples"} };
-        return Arrays.asList(data);
+    public static Collection testCases() {
+        String expectedBill = "Subtotal: £3.55\n" +
+                "Total: £3.55";
+
+        String expectedBill1 = "Subtotal: £4.9\n" +
+                "Apples 10% off: -20p\n" +
+                "Two soups discount 50% off from bread: -40 p\n" +
+                "Total: £4.3";
+
+        String expectedBill2 = "Subtotal: £3.6\n" +
+                "Apples 10% off: -10p\n" +
+                "Total: £3.5";
+
+        return Arrays.asList(new String[][][] {
+                {{"milk","soup","bread", "bread"},{expectedBill}},
+                {{"apples","apples","soup", "soup", "bread", "bread"},{expectedBill1}},
+                {{"apples","soup","soup","milk"},{expectedBill2}},
+        });
     }
+
+    @Before
+    public void initialize() {
+        priceBasket = new PriceBasket();
+    }
+
     @Test
-    public void buyApplesBread2Soups() {
-//        priceBasket.main();
-        assertEquals(5,5);
+    public void testCreateBill() {
+//        GIVEN a items with items and WHEN create bill
+        String bill = priceBasket.createBill(items);
+
+//        THEN bill equals expected bill
+        assertEquals(expectedBill[0],bill);
     }
 }

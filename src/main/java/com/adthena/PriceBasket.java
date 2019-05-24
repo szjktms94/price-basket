@@ -2,57 +2,49 @@ package com.adthena;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class PriceBasket {
 
+    private final int APPLES_PRICE = 100;
+    private final int SOUP_PRICE = 65;
+    private final int BREAD_PRICE = 80;
+    private final int MILK_PRICE = 130;
+
     public String createBill(String[] itemList) {
         Map<String, Long> counted = Arrays.stream(itemList)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        Long applesCounter = counted.get("apples");
-        Long soupCounter = counted.get("soup");
-        Long breadCounter = counted.get("bread");
-        Long milkCounter = counted.get("milk");
+        Long applesCounter = counted.get("apples") == null ? 0L : counted.get("apples");
+        Long soupCounter = counted.get("soup") == null ? 0L : counted.get("soup");
+        Long breadCounter = counted.get("bread") == null ? 0L : counted.get("bread");
+        Long milkCounter = counted.get("milk") == null ? 0L : counted.get("milk");
 
-        if (applesCounter == null) {
-            applesCounter = (long) 0;
-        }
-        if (soupCounter == null) {
-            soupCounter = (long) 0;
-        }
-        if (breadCounter == null) {
-            breadCounter = (long) 0;
-        }
-        if (milkCounter == null) {
-            milkCounter = (long) 0;
-        }
-
-        long total = applesCounter * 100 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80;
-        long subTotal;
+        long subtotal = applesCounter * APPLES_PRICE + milkCounter * MILK_PRICE + soupCounter * SOUP_PRICE + breadCounter * BREAD_PRICE;
+        long total = (long) (applesCounter * APPLES_PRICE * 0.9 + milkCounter * MILK_PRICE + soupCounter * SOUP_PRICE + breadCounter * BREAD_PRICE);
 
         if (soupCounter >= 2 && breadCounter > 0) {
-            subTotal = (long) (applesCounter * 100 * 0.9 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80 - 1 * 80 * 0.5);
-        } else {
-            subTotal = (long) (applesCounter * 100 * 0.9 + milkCounter * 130 + soupCounter * 65 + breadCounter * 80);
+            total = (long) (total - 1 * 80 * 0.5);
         }
 
-        String line1 = "Subtotal: £" + (double) subTotal / 100 + "\n";
+        String line1 = "Subtotal: £" + (double) subtotal / 100 + "\n";
         String line2 = "Apples 10% off: -" + applesCounter * 10 + "p" + "\n";
         String line3 = "Two soups discount 50% off from bread: -40 p" + "\n";
         String line4 = "Total: £" + (double) total / 100;
 
-        String bill = line1;
+        StringBuilder bill = new StringBuilder();
+        bill.append(line1);
 
         if (applesCounter > 0) {
-            bill = bill + line2;
+            bill.append(line2);
         }
         if (soupCounter >= 2 && breadCounter > 0) {
-            bill = bill + line3;
+            bill.append(line3);
         }
-        bill = bill + line4;
+       bill.append(line4);
 
-        return bill;
+        return bill.toString();
     }
 }
